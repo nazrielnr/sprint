@@ -165,7 +165,69 @@ After pulling this version, rebuild so the new migration (`0002`, adds `issues.p
 
 ## Screenshots
 
-*(Add: container status `docker compose ps`, API responses, board view, dashboard, persistence check.)*
+### Containers and orchestration
+
+Build and start with one command:
+
+![docker compose up -d --build](screenshots/01a-compose-up-build-perintah-dan-awal-log.png)
+
+![build finished, all containers created](screenshots/01b-compose-up-build-hasil-akhir.png)
+
+All services up, database healthy:
+
+![docker compose ps](screenshots/02-compose-ps-healthy.png)
+
+Image sizes (`frontend` 74 MB, `backend` 315 MB) and the persistent named volume:
+
+![docker images](screenshots/08-docker-images-ukuran.png)
+
+![docker volume ls](screenshots/09a-docker-volume-ls.png)
+
+### API
+
+Health checks (service and database):
+
+![GET /api/v1/health and /api/v1/health/db](screenshots/03-health-dan-health-db.png)
+
+Projects and issues straight from PostgreSQL:
+
+![GET /api/v1/projects and /api/v1/issues](screenshots/04-get-projects-dan-issues.png)
+
+Creating an issue returns `201` with a generated key:
+
+![POST /api/v1/issues returns 201](screenshots/05-post-issue-201.png)
+
+### Application
+
+Dashboard at http://localhost:3000 — every stat is computed from the database:
+
+![Sprint dashboard](screenshots/06a-app-dashboard-localhost3000.png)
+
+Kanban board with drag-and-drop and manual ordering:
+
+![Sprint Kanban board](screenshots/06b-app-board-localhost3000.png)
+
+Issue list after a container restart:
+
+![Issues after restart](screenshots/06c-app-issues-data-setelah-restart.png)
+
+### Persistence
+
+Data before `docker compose down`:
+
+![before down](screenshots/07a-persistence-sebelum-down.png)
+
+The `postgres_data` volume survives `down`:
+
+![volume still present after down](screenshots/07b-compose-down-volume-masih-ada.png)
+
+Restart with `docker compose up -d`:
+
+![compose up again](screenshots/07c-compose-up-lagi.png)
+
+Same data after restart — nothing lost:
+
+![data after restart](screenshots/07d-persistence-sesudah-up.png)
 
 ## Links
 
