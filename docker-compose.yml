@@ -1,0 +1,71 @@
+name: sprint
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    container_name: sprint-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - sprint-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    container_name: sprint-backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-sprint}:${POSTGRES_PASSWORD:-sprint_dev_password}@db:5432/${POSTGRES_DB:-sprint}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      AUTO_MIGRATE: "true"
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sprint-network
+    restart: unless-stopped
+
+  db:
+    image: postgres:16.4-alpine
+    container_name: sprint-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sprint}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sprint_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-sprint}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sprint} -d ${POSTGRES_DB:-sprint}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sprint-network
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:4.8.1-standalone
+    container_name: sprint-adminer
+    profiles:
+      - tools
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - db
+    networks:
+      - sprint-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  sprint-network:
+    name: sprint-network
