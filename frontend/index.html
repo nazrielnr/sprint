@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Sprint</title>
+    <script>
+      // Resolve theme + accent before first paint (no flash).
+      (function () {
+        var root = document.documentElement;
+        var mode = 'auto';
+        var accent = 'blue';
+        try {
+          var t = localStorage.getItem('sprint-theme');
+          if (t === 'light' || t === 'dark' || t === 'auto') mode = t;
+          var a = localStorage.getItem('sprint-accent');
+          if (a) accent = a;
+        } catch (e) {}
+        var dark = mode === 'dark' ||
+          (mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        root.setAttribute('data-accent', accent);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
