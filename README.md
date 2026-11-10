@@ -170,8 +170,8 @@ After pulling this version, rebuild so the new migration (`0002`, adds `issues.p
 ## Links
 
 - **GitHub repository:** https://github.com/nazrielnr/sprint
-- **Article:** *(add your published 500–800 word article URL)*
-- **YouTube demo:** *(add your 3–5 minute demo URL)*
+- **Article:** [Membangun Sprint — Workspace Manajemen Proyek dengan React, FastAPI, dan Docker](https://medium.com/@nazrielnur25/membangun-sprint-workspace-manajemen-proyek-dengan-react-fastapi-dan-docker-b35dbf213526)
+- **YouTube demo:** https://youtu.be/G6ZCtXWr5G0
 
 ## AI Usage Declaration
 
